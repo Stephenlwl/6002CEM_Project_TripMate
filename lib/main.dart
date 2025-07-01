@@ -1,15 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:tripmate_application/services/activity_service.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
-
+import 'theme_colors.dart';
 // Pages
 import 'pages/trip_list_page.dart';
 import 'pages/auth_page.dart';
 import 'pages/packing_list_page.dart';
 import 'pages/schedule_page.dart';
-import 'pages/notes_page.dart';
 import 'pages/map_page.dart';
 import 'pages/trip_detail_page.dart';
 
@@ -33,12 +33,13 @@ class TripMateApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => TripService()),
+        ChangeNotifierProvider(create: (_) => ActivityService()),
       ],
       child: MaterialApp(
         title: 'TripMate',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          scaffoldBackgroundColor: const Color(0xFFDEFCF9),
+          scaffoldBackgroundColor:  AppColors.white,
           primaryColor: const Color(0xFFCADEFC),
           appBarTheme: const AppBarTheme(
             backgroundColor: Color(0xFFCADEFC),
@@ -77,10 +78,6 @@ class TripMateApp extends StatelessWidget {
           '/schedule': (context) {
             final trip = ModalRoute.of(context)!.settings.arguments as Trip;
             return SchedulePage(trip: trip);
-          },
-          '/notes': (context) {
-            final trip = ModalRoute.of(context)!.settings.arguments as Trip;
-            return NotesPage(trip: trip);
           },
           '/map': (context) {
             final trip = ModalRoute.of(context)!.settings.arguments as Trip;

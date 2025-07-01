@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Trip {
   String id;
+  String tripType;
   String title;
   String destination;
   DateTime startDate;
@@ -9,6 +12,7 @@ class Trip {
 
   Trip({
     required this.id,
+    required this.tripType,
     required this.title,
     required this.destination,
     required this.startDate,
@@ -19,6 +23,7 @@ class Trip {
 
   Trip copyWith({
     String? id,
+    String? tripType,
     String? title,
     String? destination,
     DateTime? startDate,
@@ -28,6 +33,7 @@ class Trip {
   }) {
     return Trip(
       id: id ?? this.id,
+      tripType: tripType ?? this.tripType,
       title: title ?? this.title,
       destination: destination ?? this.destination,
       startDate: startDate ?? this.startDate,
@@ -38,21 +44,23 @@ class Trip {
   }
 
   Map<String, dynamic> toMap() => {
+    'tripType': tripType,
     'title': title,
     'destination': destination,
-    'startDate': startDate.toIso8601String(),
-    'endDate': endDate.toIso8601String(),
+    'startDate': Timestamp.fromDate(startDate),
+    'endDate': Timestamp.fromDate(endDate),
     'userId': userId,
     'collaborators': collaborators,
   };
 
   factory Trip.fromMap(String id, Map<String, dynamic> map) => Trip(
     id: id,
-    title: map['title'],
-    destination: map['destination'],
-    startDate: DateTime.parse(map['startDate']),
-    endDate: DateTime.parse(map['endDate']),
-    userId: map['userId'],
+    tripType: map['tripType'] ?? '',
+    title: map['title'] ?? '',
+    destination: map['destination'] ?? '',
+    startDate: (map['startDate'] as Timestamp).toDate(),
+    endDate: (map['endDate'] as Timestamp).toDate(),
+    userId: map['userId'] ?? '',
     collaborators: List<String>.from(map['collaborators'] ?? []),
   );
 
